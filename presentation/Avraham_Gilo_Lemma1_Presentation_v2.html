@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Avraham & Gilo — Lemma 1 Verification with Ampcode + Wolfram (v2)</title>
+<style>
+  *{margin:0;padding:0;box-sizing:border-box;}
+  @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap');
+  body{font-family:'Inter','Segoe UI',sans-serif;background:#0a0e1a;color:#e0e6f0;overflow:hidden;height:100vh;width:100vw;-webkit-font-smoothing:antialiased;}
+
+  /* === SLIDE CONTAINER === */
+  .slides-wrapper{display:flex;transition:transform 0.55s cubic-bezier(.4,0,.2,1);height:100vh;width:100vw;}
+  .slide{min-width:100vw;height:100vh;display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px 60px;position:relative;overflow:hidden;}
+
+  /* === BACKGROUNDS === */
+  .bg-hero{background:linear-gradient(135deg,#0a0e1a 0%,#111830 40%,#0d1528 100%);}
+  .bg-dark{background:linear-gradient(160deg,#0b1020 0%,#121a30 100%);}
+  .bg-deep{background:linear-gradient(145deg,#080c18 0%,#0f1628 50%,#0a1020 100%);}
+  .bg-accent{background:linear-gradient(135deg,#0a1025 0%,#141e38 50%,#0d1528 100%);}
+
+  /* === CIRCUIT PATTERN OVERLAY === */
+  .slide::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;
+    background:radial-gradient(circle at 20% 80%,rgba(59,130,246,0.04) 0%,transparent 50%),
+    radial-gradient(circle at 80% 20%,rgba(168,85,247,0.04) 0%,transparent 50%);
+    pointer-events:none;z-index:0;}
+  .slide>*{position:relative;z-index:1;}
+
+  /* === NAVIGATION === */
+  .nav-arrows{position:fixed;bottom:30px;right:30px;display:flex;gap:12px;z-index:100;}
+  .nav-btn{width:48px;height:48px;border-radius:50%;border:2px solid rgba(255,255,255,0.15);
+    background:rgba(15,20,40,0.85);color:#8899bb;font-size:20px;cursor:pointer;
+    display:flex;align-items:center;justify-content:center;transition:all 0.25s;backdrop-filter:blur(8px);}
+  .nav-btn:hover{background:rgba(59,130,246,0.3);border-color:rgba(59,130,246,0.5);color:#fff;}
+  .nav-btn:active{transform:scale(0.92);}
+  .slide-counter{position:fixed;bottom:38px;left:30px;font-size:14px;color:#556;z-index:100;font-weight:600;letter-spacing:1px;}
+
+  /* === LOGOS BAR === */
+  .logos-bar{position:fixed;top:16px;right:20px;display:flex;align-items:center;gap:16px;z-index:100;opacity:0.85;}
+  .logos-bar img{height:28px;filter:brightness(1.1);}
+  .logo-text{font-size:13px;font-weight:700;letter-spacing:0.5px;}
+  .logo-esl{color:#00b4d8;font-weight:800;font-size:15px;letter-spacing:1px;}
+  .logo-amp{color:#3b82f6;}
+  .logo-wolfram{color:#dd1100;}
+
+  /* === TYPOGRAPHY === */
+  h1{font-size:clamp(28px,4vw,52px);font-weight:800;line-height:1.15;margin-bottom:16px;}
+  h2{font-size:clamp(22px,3vw,38px);font-weight:700;line-height:1.2;margin-bottom:12px;}
+  h3{font-size:clamp(16px,2vw,24px);font-weight:600;margin-bottom:10px;}
+  .subtitle{font-size:clamp(14px,1.5vw,20px);color:#8899bb;font-weight:300;line-height:1.5;}
+  .gradient-text{background:linear-gradient(135deg,#3b82f6,#8b5cf6,#ec4899);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;}
+  .accent-blue{color:#60a5fa;}
+  .accent-green{color:#34d399;}
+  .accent-orange{color:#fb923c;}
+  .accent-red{color:#f87171;}
+  .accent-purple{color:#a78bfa;}
+  .accent-cyan{color:#00b4d8;}
+
+  /* === CARDS & BOXES === */
+  .card{background:rgba(20,30,55,0.6);border:1px solid rgba(255,255,255,0.06);border-radius:16px;padding:28px 32px;backdrop-filter:blur(12px);}
+  .card-glow{box-shadow:0 0 30px rgba(59,130,246,0.08);}
+  .code-box{background:#0d1117;border:1px solid #21262d;border-radius:10px;padding:20px 24px;font-family:'Consolas','Fira Code',monospace;font-size:clamp(12px,1.2vw,16px);color:#7ee787;line-height:1.7;white-space:pre-wrap;overflow-x:auto;}
+  .prompt-prefix{color:#79c0ff;}
+
+  /* === GRID LAYOUTS === */
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:32px;width:100%;max-width:1100px;}
+  .three-col{display:grid;grid-template-columns:1fr 1fr 1fr;gap:24px;width:100%;max-width:1100px;}
+  .flow-row{display:flex;align-items:center;gap:20px;flex-wrap:wrap;justify-content:center;}
+
+  /* === STEP BADGES === */
+  .step-badge{display:inline-flex;align-items:center;gap:8px;padding:6px 16px;border-radius:20px;font-size:12px;font-weight:700;letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+  .step-blue{background:rgba(59,130,246,0.15);color:#60a5fa;border:1px solid rgba(59,130,246,0.3);}
+  .step-green{background:rgba(52,211,153,0.15);color:#34d399;border:1px solid rgba(52,211,153,0.3);}
+  .step-orange{background:rgba(251,146,60,0.15);color:#fb923c;border:1px solid rgba(251,146,60,0.3);}
+  .step-purple{background:rgba(167,139,250,0.15);color:#a78bfa;border:1px solid rgba(167,139,250,0.3);}
+  .step-red{background:rgba(248,113,113,0.15);color:#f87171;border:1px solid rgba(248,113,113,0.3);}
+  .step-cyan{background:rgba(0,180,216,0.15);color:#00b4d8;border:1px solid rgba(0,180,216,0.3);}
+
+  /* === BULLET LISTS === */
+  .bullet-list{list-style:none;padding:0;}
+  .bullet-list li{padding:6px 0;font-size:clamp(13px,1.3vw,17px);color:#c0cce0;line-height:1.5;}
+  .bullet-list li::before{content:'▸ ';color:#60a5fa;font-weight:700;margin-right:4px;}
+  .bullet-list.green li::before{color:#34d399;}
+  .bullet-list.orange li::before{color:#fb923c;}
+  .bullet-list.red li::before{color:#f87171;}
+
+  /* === FLOW ARROWS === */
+  .arrow{font-size:28px;color:#3b82f6;font-weight:300;}
+  .flow-box{background:rgba(20,30,55,0.7);border:1px solid rgba(255,255,255,0.08);border-radius:12px;padding:16px 20px;text-align:center;min-width:140px;flex:1;}
+  .flow-box h4{font-size:14px;font-weight:700;margin-bottom:6px;}
+  .flow-box p{font-size:12px;color:#8899bb;}
+
+  /* === IMAGE SLIDES === */
+  .slide-image{max-width:90vw;max-height:70vh;border-radius:12px;box-shadow:0 8px 40px rgba(0,0,0,0.5);object-fit:contain;}
+
+  /* === COMPARISON TABLE === */
+  .compare-table{width:100%;max-width:900px;border-collapse:collapse;margin-top:16px;}
+  .compare-table th{padding:12px 16px;text-align:left;font-size:14px;font-weight:700;border-bottom:2px solid rgba(59,130,246,0.3);color:#60a5fa;}
+  .compare-table td{padding:10px 16px;font-size:14px;border-bottom:1px solid rgba(255,255,255,0.05);color:#c0cce0;}
+  .compare-table tr:hover td{background:rgba(59,130,246,0.05);}
+
+  /* === DIVIDER === */
+  .divider{width:80px;height:3px;background:linear-gradient(90deg,#3b82f6,#8b5cf6);border-radius:3px;margin:16px 0;}
+
+  /* === MOBILE === */
+  @media(max-width:768px){
+    .slide{padding:24px 20px;}
+    .two-col,.three-col{grid-template-columns:1fr;}
+    .flow-row{flex-direction:column;}
+    .arrow{transform:rotate(90deg);}
+    .nav-arrows{bottom:16px;right:16px;}
+    .nav-btn{width:40px;height:40px;font-size:16px;}
+    .logos-bar{top:8px;right:10px;gap:10px;}
+    .logos-bar img{height:20px;}
+    .logo-text{font-size:11px;}
+    .slide-counter{bottom:20px;left:16px;font-size:12px;}
+    .code-box{padding:12px 16px;font-size:12px;}
+    h1{margin-bottom:12px;}
+    .card{padding:18px 20px;}
+  }
+
+  /* === TOUCH SWIPE === */
+  .slides-wrapper{touch-action:pan-y;}
+
+  /* === ANIMATIONS === */
+  @keyframes fadeInUp{from{opacity:0;transform:translateY(30px);}to{opacity:1;transform:translateY(0);}}
+  .slide.active .animate{animation:fadeInUp 0.6s ease forwards;}
+</style>
+</head>
+<body>
+
+<!-- LOGOS BAR -->
+<div class="logos-bar">
+  <span class="logo-text logo-esl">ESL</span>
+  <span class="logo-text logo-amp">⚡ Ampcode</span>
+  <span class="logo-text logo-wolfram">◆ Wolfram</span>
+</div>
+
+<!-- SLIDE COUNTER -->
+<div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">18</span></div>
+
+<!-- NAVIGATION -->
+<div class="nav-arrows">
+  <button class="nav-btn" onclick="prevSlide()" aria-label="Previous">◀</button>
+  <button class="nav-btn" onclick="nextSlide()" aria-label="Next">▶</button>
+</div>
+
+<!-- ============== SLIDES ============== -->
+<div class="slides-wrapper" id="slidesWrapper">
+
+<!-- ===== SLIDE 1: OPENING IMAGE ===== -->
+<div class="slide bg-hero active">
+  <img src="amp-paper-to-nb.png" alt="Ampcode: Research Paper to Mathematica Notebook" class="slide-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+  <div style="display:none;flex-direction:column;align-items:center;text-align:center;">
+    <h1 class="gradient-text">Ampcode + Wolfram Mathematica</h1>
+    <p class="subtitle">From Research Paper to Self-Consistent Proof & Interactive Notebook</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 2: WORKFLOW IMAGE ===== -->
+<div class="slide bg-dark">
+  <img src="amp-workflow.png" alt="Ampcode Workflow" class="slide-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+  <div style="display:none;flex-direction:column;align-items:center;text-align:center;">
+    <h1 class="gradient-text">The Ampcode Workflow</h1>
+    <p class="subtitle">Extract → Implement → Validate → Self-Consistency → Novel Results</p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 3: WHAT GPT-5 COULDN'T DO ===== -->
+<div class="slide bg-deep">
+  <span class="step-badge step-red">The Challenge</span>
+  <h1>What GPT-5 <span class="accent-red">Couldn't</span> Do</h1>
+  <div class="divider"></div>
+  <p class="subtitle" style="max-width:800px;text-align:center;margin-bottom:28px;">
+    Professor Gilo's paper on insurance collusion contains Lemma 1 — a nuanced mathematical proof
+    involving implicit differentiation, Arrow-Pratt risk aversion, and limit arguments.
+    GPT-5 kept making algebraic errors when trying to verify it and apply it to CRRA utility.
+  </p>
+  <div class="two-col" style="max-width:900px;">
+    <div class="card card-glow" style="border-left:3px solid #f87171;">
+      <h3 class="accent-red">❌ GPT-5 Failures</h3>
+      <ul class="bullet-list red">
+        <li>Incorrect implicit differentiation of FOC</li>
+        <li>Wrong Arrow-Pratt substitution steps</li>
+        <li>Missed limit behavior at P→0 and P→1</li>
+        <li>Could not produce executable code</li>
+        <li>No self-consistency check on γ vs α*(γ)</li>
+        <li>Repeated mistakes across multiple attempts</li>
+      </ul>
+    </div>
+    <div class="card card-glow" style="border-left:3px solid #34d399;">
+      <h3 class="accent-green">✅ What Was Needed</h3>
+      <ul class="bullet-list green">
+        <li>Verify every equation (14–19) step by step</li>
+        <li>Compute optimal α* numerically via FOC</li>
+        <li>Apply Lemma 1(i) to CRRA utility U=A<sup>(1-γ)</sup>/(1-γ)</li>
+        <li>Find critical γ threshold analytically</li>
+        <li>Self-consistent check: α*(γ) feeds back into γ_crit</li>
+        <li>Interactive notebook + plain-English proof</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: ONE PROMPT ===== -->
+<div class="slide bg-accent">
+  <span class="step-badge step-blue">The Magic Moment</span>
+  <h1>One <span class="gradient-text">Prompt</span>. Complete Solution.</h1>
+  <div class="divider"></div>
+  <p class="subtitle" style="margin-bottom:24px;">The entire task was accomplished with a single natural-language request:</p>
+  <div class="code-box" style="max-width:900px;width:100%;">
+<span class="prompt-prefix">User →</span> Use Wolfram Mathematica CK skill.
+Attached is the research paper "Avraham_and_Gilo_Insurance_collusion".
+
+Start from Lemma 1 in the paper. I want to verify that the
+lemma and its proof (which is in the appendix) are correct,
+and then show that Lemma 1(i) can apply to consumers with
+CRRA utility.
+
+Result should be interactive Wolfram Mathematica .nb where
+user can insert inputs and use sliders, documented in detail
+for a scientific presentation to Professor Gilo.</div>
+  <p style="margin-top:20px;font-size:14px;color:#556;">No manual equation entry. No debugging.</p>
+</div>
+
+<!-- ===== SLIDE 5: THE COMPLETE PROCESS ===== -->
+<div class="slide bg-dark">
+  <span class="step-badge step-green">Under The Hood</span>
+  <h2>The Complete <span class="accent-blue">Process</span></h2>
+  <div class="divider"></div>
+  <div style="max-width:750px;margin-top:20px;">
+    <div class="card" style="margin-bottom:10px;border-left:3px solid #3b82f6;padding:16px 24px;">
+      <h3 style="font-size:15px;margin-bottom:4px;"><span class="accent-blue">① AI Reads PDF</span></h3>
+      <p style="font-size:14px;color:#8899bb;">Extracts all equations, definitions, lemma statement, and appendix proof steps</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:3px solid #34d399;padding:16px 24px;">
+      <h3 style="font-size:15px;margin-bottom:4px;"><span class="accent-green">② CandleKeep Reference</span></h3>
+      <p style="font-size:14px;color:#8899bb;">Queries Wolfram Language syntax from 60+ reference documents for correct Mathematica code</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:3px solid #fb923c;padding:16px 24px;">
+      <h3 style="font-size:15px;margin-bottom:4px;"><span class="accent-orange">③ Skill Generates .nb</span></h3>
+      <p style="font-size:14px;color:#8899bb;">12 sections including 3 Manipulate panels with interactive sliders</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:3px solid #a78bfa;padding:16px 24px;">
+      <h3 style="font-size:15px;margin-bottom:4px;"><span class="accent-purple">④ 6-Point Syntax Validation</span></h3>
+      <p style="font-size:14px;color:#8899bb;">Brackets, invalid characters, BoxData, notebook structure, string escaping, cell grouping</p>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:3px solid #f87171;padding:16px 24px;">
+      <h3 style="font-size:15px;margin-bottom:4px;"><span class="accent-red">⑤ Self-Consistency Verification</span></h3>
+      <p style="font-size:14px;color:#8899bb;">Catches the naive threshold error — α₀ depends on γ, so γ_crit(γ) must be solved implicitly</p>
+    </div>
+    <div class="card" style="border-left:3px solid #00b4d8;padding:16px 24px;">
+      <h3 style="font-size:15px;margin-bottom:4px;"><span class="accent-cyan">⑥ Plain-English Proof Appendix</span></h3>
+      <p style="font-size:14px;color:#8899bb;">Human-readable step-by-step proof added for presentation to Professor Gilo</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 6: THE PAPER ===== -->
+<div class="slide bg-deep">
+  <span class="step-badge step-orange">The Paper</span>
+  <h2>Avraham & Gilo (2025)</h2>
+  <p class="subtitle" style="margin-bottom:20px;">Insurance Collusion and Imperfect Competition when Insurers Increase Risk</p>
+  <div class="divider"></div>
+  <div class="two-col" style="max-width:1000px;margin-top:20px;">
+    <div class="card">
+      <h3 class="accent-blue">📋 Model Setup</h3>
+      <ul class="bullet-list">
+        <li><strong>W</strong> — Initial wealth</li>
+        <li><strong>H</strong> — Harm (loss in bad state)</li>
+        <li><strong>P</strong> — Accident probability</li>
+        <li><strong>q ≥ 1</strong> — Loading factor (supra-competitive price)</li>
+        <li><strong>α ∈ [0,1]</strong> — Coverage chosen by consumer</li>
+        <li><strong>Ra(A) = −U″(A)/U′(A)</strong> — Arrow-Pratt coefficient</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 class="accent-purple">📐 Lemma 1</h3>
+      <ul class="bullet-list">
+        <li><strong>(i) Single-peaked:</strong> If Ra decreases fast enough in wealth, ∃ P̄ that maximizes insurance demand</li>
+        <li><strong>(ii) Monotone decreasing:</strong> If Ra is not too decreasing, demand falls monotonically with P</li>
+        <li>Proof via implicit differentiation of the FOC</li>
+        <li>Limit arguments at P→0 and P→1 determine sign of dα*/dP</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 7: PROOF STEP 1 — FOC ===== -->
+<div class="slide bg-accent">
+  <span class="step-badge step-blue">Proof Step 1</span>
+  <h2>The First-Order <span class="accent-blue">Condition</span></h2>
+  <div class="divider"></div>
+  <p class="subtitle" style="max-width:800px;text-align:center;margin-bottom:20px;">
+    The consumer maximizes expected utility. The FOC equates marginal cost of insurance
+    (premium in the good state) with marginal benefit (coverage in the bad state).
+  </p>
+  <div class="code-box" style="max-width:850px;width:100%;font-size:clamp(13px,1.4vw,18px);">
+−(1−P)·q·U′(W₁) + (1−qP)·U′(W₂) = 0
+
+where  W₁ = W − αqPH     (good state)
+       W₂ = W − H(1−α) − αqPH   (bad state)</div>
+  <div class="card card-glow" style="max-width:850px;margin-top:20px;">
+    <h3 class="accent-orange" style="font-size:15px;">CRRA Specialization: U′(A) = A<sup>−γ</sup></h3>
+    <div class="code-box" style="font-size:clamp(12px,1.2vw,16px);">
+(W₂ / W₁)^γ  =  (1−P)·q / (1−qP)
+
+At P = 0:  (W − H(1−α))^(−γ) = q · W^(−γ)</div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 8: PROOF STEP 2 — OPTIMAL COVERAGE AT P→0 ===== -->
+<div class="slide bg-dark">
+  <span class="step-badge step-green">Proof Step 2</span>
+  <h2>Optimal Coverage at <span class="accent-green">P → 0</span></h2>
+  <div class="divider"></div>
+  <p class="subtitle" style="max-width:800px;text-align:center;margin-bottom:20px;">
+    At P→0, the FOC simplifies. Solving for α₀ reveals coverage depends on risk aversion γ.
+  </p>
+  <div class="code-box" style="max-width:850px;width:100%;">
+FOC at P→0:  (W − H(1−α))^(−γ) = q · W^(−γ)
+
+Solving for α₀:
+
+  α₀(γ) = 1 − (W/H) · (1 − q^(−1/γ))</div>
+  <div class="card card-glow" style="max-width:850px;margin-top:20px;border-left:3px solid #34d399;">
+    <h3 class="accent-green" style="font-size:16px;">🔑 KEY INSIGHT</h3>
+    <p style="font-size:15px;color:#c0cce0;line-height:1.6;">
+      Coverage α₀ depends on γ — this creates the <strong class="accent-orange">self-consistency issue</strong> later.
+      You cannot compute γ_crit while holding α fixed, because α itself changes with γ.
+    </p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 9: PROOF STEP 3 — HOW COVERAGE CHANGES ===== -->
+<div class="slide bg-deep">
+  <span class="step-badge step-orange">Proof Step 3</span>
+  <h2>How Coverage Changes with <span class="accent-orange">Risk</span></h2>
+  <div class="divider"></div>
+  <p class="subtitle" style="max-width:800px;text-align:center;margin-bottom:16px;">
+    Implicit differentiation of the FOC yields Eq. (17) — the derivative dα*/dP:
+  </p>
+  <div class="code-box" style="max-width:900px;width:100%;font-size:clamp(12px,1.2vw,15px);">
+dα*/dP = N / D
+
+N = (1−P)·α·q·H·[Ra(W₁) − Ra(W₂)] + (q−1)/(1−qP)
+D = −(1−P)·H·[qP·Ra(W₁) + (1−qP)·Ra(W₂)]     ← always < 0</div>
+  <div class="two-col" style="max-width:900px;margin-top:20px;">
+    <div class="card" style="border-left:3px solid #34d399;">
+      <h3 style="font-size:15px;"><span class="accent-green">N &lt; 0 → dα*/dP &gt; 0</span></h3>
+      <p style="font-size:14px;color:#8899bb;">Demand rises then falls → <strong>Lemma 1(i)</strong> single-peaked</p>
+    </div>
+    <div class="card" style="border-left:3px solid #f87171;">
+      <h3 style="font-size:15px;"><span class="accent-red">N &gt; 0 → dα*/dP &lt; 0</span></h3>
+      <p style="font-size:14px;color:#8899bb;">Demand falls monotonically → <strong>Lemma 1(ii)</strong></p>
+    </div>
+  </div>
+  <div class="card" style="max-width:900px;margin-top:16px;">
+    <h3 style="font-size:14px;" class="accent-blue">Numerator at P→0</h3>
+    <div class="code-box" style="font-size:13px;">N₀ = α₀·q·H·γ·[1/W − 1/(W − H(1−α₀))] + (q−1)</div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 10: PROOF STEP 4 — THE SELF-CONSISTENCY TRAP ===== -->
+<div class="slide bg-accent">
+  <span class="step-badge step-red">Key Insight</span>
+  <h1>The Self-Consistency <span class="accent-red">Trap</span></h1>
+  <div class="divider"></div>
+  <div class="two-col" style="max-width:1000px;margin-top:20px;">
+    <div class="card card-glow" style="border-left:4px solid #f87171;">
+      <h3 class="accent-red">❌ The Naive Approach (GPT-5's Error)</h3>
+      <ul class="bullet-list red">
+        <li>Hold α fixed at some value (e.g. α = 0.5)</li>
+        <li>Compute γ_crit ≈ 5.9</li>
+        <li>Claim Lemma 1(i) holds for γ &gt; 5.9</li>
+      </ul>
+      <div class="code-box" style="margin-top:12px;font-size:13px;color:#f87171;">
+⚠ WRONG: α itself changes with γ!
+
+As γ increases, α₀(γ) → 1
+The "fixed α" assumption is invalid.</div>
+    </div>
+    <div class="card card-glow" style="border-left:4px solid #34d399;">
+      <h3 class="accent-green">✅ The Self-Consistent Approach</h3>
+      <ul class="bullet-list green">
+        <li>α₀ depends on γ through the FOC</li>
+        <li>As γ ↑, α₀(γ) → 1 (full coverage)</li>
+        <li>Wealth gap W₁ − W₂ vanishes</li>
+        <li>γ_crit(γ) grows faster than γ</li>
+      </ul>
+      <div class="code-box" style="margin-top:12px;font-size:13px;color:#34d399;">
+Must solve the implicit inequality:
+
+  γ > γ_crit(γ)
+
+where γ_crit depends on α₀(γ).</div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 11: PROOF STEP 5 — ASYMPTOTIC ARGUMENT ===== -->
+<div class="slide bg-dark">
+  <span class="step-badge step-purple">Proof Step 5</span>
+  <h2>The Asymptotic <span class="accent-purple">Argument</span></h2>
+  <div class="divider"></div>
+  <p class="subtitle" style="max-width:800px;text-align:center;margin-bottom:20px;">
+    Taylor expansion of q<sup>−1/γ</sup> as γ → ∞ reveals the limiting behavior of the numerator N₀.
+  </p>
+  <div class="code-box" style="max-width:850px;width:100%;">
+Taylor expansion:  q^(−1/γ) ≈ 1 − ln(q)/γ   as γ → ∞
+
+Then:  α₀ → 1 − (W/H)·(ln(q)/γ)
+
+The product  γ·[1/W − 1/W₂]  →  −ln(q)/W
+
+Therefore:
+
+  N₀  →  (q−1) − q·H·ln(q)/W</div>
+  <div class="card card-glow" style="max-width:850px;margin-top:20px;">
+    <h3 class="accent-blue" style="font-size:15px;">Numerical Check: W=100, H=40, q=1.3</h3>
+    <div class="code-box" style="font-size:14px;">
+N₀ → (1.3 − 1) − 1.3 × 40 × ln(1.3) / 100
+   = 0.3 − 1.3 × 40 × 0.2624 / 100
+   = 0.3 − 0.136
+   = <span style="color:#f87171;font-weight:700;">+0.164  &gt; 0</span></div>
+  </div>
+  <div class="card" style="max-width:850px;margin-top:14px;border-left:3px solid #f87171;">
+    <p style="font-size:15px;color:#f87171;font-weight:600;">
+      N₀ is ALWAYS positive for typical parameters. Lemma 1(i) NEVER holds for CRRA when H/W = 0.4
+    </p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 12: PROOF STEP 6 — WHEN CAN IT HOLD? ===== -->
+<div class="slide bg-deep">
+  <span class="step-badge step-orange">Proof Step 6</span>
+  <h2>When <span class="accent-orange">CAN</span> Lemma 1(i) Hold?</h2>
+  <div class="divider"></div>
+  <p class="subtitle" style="max-width:800px;text-align:center;margin-bottom:20px;">
+    For N₀ &lt; 0 (single-peaked demand), we need the harm term to dominate:
+  </p>
+  <div class="code-box" style="max-width:700px;width:100%;font-size:clamp(14px,1.4vw,18px);text-align:center;">
+H/W  ≥  (q−1) / (q · ln q)</div>
+  <div class="card card-glow" style="max-width:700px;margin-top:24px;">
+    <table class="compare-table">
+      <tr><th>Loading q</th><th>Minimum H/W</th><th>Interpretation</th></tr>
+      <tr><td class="accent-blue">q = 1.1</td><td>0.954</td><td>Harm ≥ 95.4% of wealth</td></tr>
+      <tr><td class="accent-orange">q = 1.3</td><td>0.880</td><td>Harm ≥ 88.0% of wealth</td></tr>
+      <tr><td class="accent-red">q = 1.5</td><td>0.822</td><td>Harm ≥ 82.2% of wealth</td></tr>
+    </table>
+  </div>
+  <div class="card" style="max-width:700px;margin-top:16px;border-left:3px solid #fb923c;">
+    <p style="font-size:15px;color:#fb923c;font-weight:600;">
+      Only catastrophic harm (88%+ of wealth for q = 1.3) produces single-peaked demand with CRRA utility.
+    </p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 13: WHY THE TWO EFFECTS CANCEL ===== -->
+<div class="slide bg-accent">
+  <span class="step-badge step-purple">Economic Intuition</span>
+  <h2>Why the Two Effects <span class="accent-purple">Cancel</span></h2>
+  <div class="divider"></div>
+  <div style="max-width:800px;margin-top:24px;">
+    <div class="flow-box" style="margin-bottom:14px;border-left:3px solid #34d399;text-align:left;padding:18px 24px;">
+      <h4 class="accent-green" style="font-size:16px;">✓ Effect 1: Risk Aversion Rises</h4>
+      <p style="font-size:14px;color:#c0cce0;">γ ↑ → Risk aversion increases → Ra(W₁) − Ra(W₂) becomes more negative → pushes N₀ toward negative</p>
+    </div>
+    <div class="flow-box" style="margin-bottom:14px;border-left:3px solid #f87171;text-align:left;padding:18px 24px;">
+      <h4 class="accent-red" style="font-size:16px;">✗ Effect 2: Coverage Closes the Gap</h4>
+      <p style="font-size:14px;color:#c0cce0;">γ ↑ → Coverage α₀ → 1 → Wealth gap shrinks → Ra(W₁) ≈ Ra(W₂) → difference vanishes</p>
+    </div>
+    <div class="flow-box" style="margin-bottom:14px;border-left:3px solid #fb923c;text-align:left;padding:18px 24px;">
+      <h4 class="accent-orange" style="font-size:16px;">≈ Net Effect: Forces Cancel</h4>
+      <p style="font-size:14px;color:#c0cce0;">The two effects approximately cancel, leaving the (q−1) &gt; 0 term dominant → N₀ &gt; 0 → Lemma 1(ii)</p>
+    </div>
+  </div>
+  <div class="card" style="max-width:800px;margin-top:12px;">
+    <p style="font-size:15px;color:#c0cce0;line-height:1.6;">
+      Utility functions where Ra(A) decreases <strong class="accent-orange">faster than 1/A</strong>
+      (e.g., HARA with appropriate parameters, DRRA class) are needed for Lemma 1(i) to hold
+      at typical harm levels.
+    </p>
+  </div>
+</div>
+
+<!-- ===== SLIDE 14: INTERACTIVE NOTEBOOK ===== -->
+<div class="slide bg-dark">
+  <span class="step-badge step-green">Deliverable</span>
+  <h2>Interactive Mathematica <span class="accent-green">Notebook</span></h2>
+  <div class="divider"></div>
+  <div class="three-col" style="margin-top:20px;">
+    <div class="card">
+      <h3 style="font-size:16px;">📊 3 Manipulate Panels</h3>
+      <ul class="bullet-list" style="font-size:13px;">
+        <li>Coverage α*(P) with peak detection</li>
+        <li>Arrow-Pratt decomposition of Eq.(17)</li>
+        <li>Aggregate demand with heterogeneous consumers</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="font-size:16px;">🔬 6 Validation Tests</h3>
+      <ul class="bullet-list green" style="font-size:13px;">
+        <li>FOC consistency check</li>
+        <li>Wealth ordering W₁ &gt; W₂</li>
+        <li>Arrow-Pratt identity</li>
+        <li>Denominator sign &lt; 0</li>
+        <li>P→1 limit behavior</li>
+        <li>Reproducibility (fixed seed)</li>
+      </ul>
+    </div>
+    <div class="card">
+      <h3 style="font-size:16px;">🎛️ Interactive Sliders</h3>
+      <ul class="bullet-list orange" style="font-size:13px;">
+        <li>Wealth W: 50–500</li>
+        <li>Harm H: 5–80</li>
+        <li>Loading q: 1.01–3.0</li>
+        <li>CRRA γ: 0.1–15.0</li>
+        <li>Consumer heterogeneity range</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 15: SELF-CONSISTENCY ACROSS SCIENCE ===== -->
+<div class="slide bg-deep">
+  <span class="step-badge step-cyan">Universal Pattern</span>
+  <h2>Self-Consistency Across <span class="gradient-text">Science</span></h2>
+  <div class="divider"></div>
+  <p class="subtitle" style="max-width:800px;text-align:center;margin-bottom:20px;">
+    The "threshold depends on the equilibrium which depends on the threshold" trap appears everywhere.
+  </p>
+  <div class="card card-glow" style="max-width:950px;">
+    <table class="compare-table">
+      <tr><th>Field</th><th>Critical Parameter</th><th>Equilibrium Variable</th><th>Self-Consistency Eq.</th></tr>
+      <tr><td class="accent-blue">Economics</td><td>γ_crit</td><td>α*(γ)</td><td>First-Order Condition (FOC)</td></tr>
+      <tr><td class="accent-purple">Physics</td><td>T_c</td><td>m(T)</td><td>Mean-field equation</td></tr>
+      <tr><td class="accent-orange">Engineering</td><td>P_crit</td><td>δ(P)</td><td>Equilibrium equation</td></tr>
+      <tr><td class="accent-green">Biology</td><td>μ_c</td><td>x*(μ)</td><td>Selection-mutation balance</td></tr>
+      <tr><td class="accent-red">Finance</td><td>σ_c</td><td>h*(σ)</td><td>Portfolio FOC</td></tr>
+      <tr><td class="accent-cyan">Epidemiology</td><td>R₀</td><td>I*(R₀)</td><td>SIR steady-state</td></tr>
+    </table>
+  </div>
+  <p style="margin-top:16px;font-size:14px;color:#8899bb;text-align:center;">
+    The Wolfram-Mathematica skill now checks for this pattern in <strong class="accent-blue">any</strong> field automatically.
+  </p>
+</div>
+
+<!-- ===== SLIDE 16: AMPCODE VS GPT-5 ===== -->
+<div class="slide bg-accent">
+  <span class="step-badge step-red">Comparison</span>
+  <h2>Ampcode + Wolfram vs. <span class="accent-red">GPT-5</span></h2>
+  <div class="divider"></div>
+  <div class="two-col" style="max-width:950px;margin-top:20px;">
+    <div class="card" style="border-left:4px solid #f87171;">
+      <h3 class="accent-red">❌ GPT-5 (ChatGPT Plus)</h3>
+      <ul class="bullet-list red">
+        <li>Multiple attempts, repeated algebraic errors</li>
+        <li>Cannot execute or validate equations</li>
+        <li>No interactive visualizations</li>
+        <li>No numerical root-finding</li>
+        <li>Cannot produce runnable .nb files</li>
+        <li>No syntax validation pipeline</li>
+        <li>No self-consistency verification</li>
+        <li>Hours of manual correction needed</li>
+      </ul>
+    </div>
+    <div class="card" style="border-left:4px solid #34d399;">
+      <h3 class="accent-green">✅ Ampcode + Wolfram Skill</h3>
+      <ul class="bullet-list green">
+        <li>Single prompt → complete solution</li>
+        <li>Executable Mathematica notebook</li>
+        <li>3 interactive Manipulate panels</li>
+        <li>Numerical solver with fallback methods</li>
+        <li>Production-ready .nb with 12 sections</li>
+        <li>Automated 6-point syntax validation</li>
+        <li><strong>Self-consistency verification catches errors</strong></li>
+        <li>Minutes, not hours</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 17: THE INFRASTRUCTURE STACK ===== -->
+<div class="slide bg-dark">
+  <span class="step-badge step-purple">Why It Works</span>
+  <h2>The <span class="accent-purple">Infrastructure</span> Stack</h2>
+  <div class="divider"></div>
+  <div style="max-width:700px;margin-top:24px;">
+    <div class="card" style="margin-bottom:12px;border-left:3px solid #3b82f6;">
+      <h3 class="accent-blue" style="font-size:16px;">🤖 Ampcode Agent</h3>
+      <p style="font-size:14px;color:#8899bb;">AI orchestrator that reads papers, plans the approach, writes code, and validates output end-to-end</p>
+    </div>
+    <div class="card" style="margin-bottom:12px;border-left:3px solid #34d399;">
+      <h3 class="accent-green" style="font-size:16px;">📚 CandleKeep Library (60+ docs)</h3>
+      <p style="font-size:14px;color:#8899bb;">RAG-backed Wolfram Language reference — correct syntax for Manipulate, FindRoot, Plot, NIntegrate, and more</p>
+    </div>
+    <div class="card" style="margin-bottom:12px;border-left:3px solid #fb923c;">
+      <h3 class="accent-orange" style="font-size:16px;">⚙️ Wolfram-Mathematica Skill</h3>
+      <p style="font-size:14px;color:#8899bb;">Phase 4B self-consistency verification + Phase 4C plain-English proof generation — custom skill with .nb format constraints</p>
+    </div>
+    <div class="card" style="border-left:3px solid #a78bfa;">
+      <h3 class="accent-purple" style="font-size:16px;">🔒 6-Point Syntax Validator</h3>
+      <p style="font-size:14px;color:#8899bb;">Invalid characters, BoxData check, bracket balance, notebook structure, string escaping, cell grouping — all automated</p>
+    </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 18: CLOSING ===== -->
+<div class="slide bg-hero">
+  <img src="amp-paper-to-nb.png" alt="Ampcode: Research Paper to Mathematica Notebook" class="slide-image" onerror="this.style.display='none';this.nextElementSibling.style.display='flex';">
+  <div style="display:none;flex-direction:column;align-items:center;text-align:center;">
+    <h1 class="gradient-text">Ampcode + Wolfram Mathematica</h1>
+    <p class="subtitle">From Research Paper to Self-Consistent Proof</p>
+  </div>
+  <div style="margin-top:28px;text-align:center;">
+    <h2 style="font-size:clamp(18px,2.5vw,30px);font-weight:300;color:#8899bb;">
+      One prompt. Self-consistent proof. Interactive notebook.
+    </h2>
+    <p style="margin-top:16px;font-size:16px;color:#556;">
+      <span class="logo-esl">ESL</span> &nbsp;•&nbsp;
+      <span class="logo-amp">⚡ Ampcode</span> &nbsp;•&nbsp;
+      <span class="logo-wolfram">◆ Wolfram Mathematica</span>
+    </p>
+  </div>
+</div>
+
+</div><!-- end slides-wrapper -->
+
+<script>
+let current = 0;
+const wrapper = document.getElementById('slidesWrapper');
+const slides = wrapper.children;
+const totalSlides = 18;
+document.getElementById('totalSlides').textContent = totalSlides;
+
+function goTo(n) {
+  current = Math.max(0, Math.min(n, totalSlides - 1));
+  wrapper.style.transform = `translateX(-${current * 100}vw)`;
+  document.getElementById('currentSlide').textContent = current + 1;
+}
+function nextSlide() { goTo(current + 1); }
+function prevSlide() { goTo(current - 1); }
+
+// Keyboard navigation
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === ' ') { e.preventDefault(); nextSlide(); }
+  if (e.key === 'ArrowLeft') { e.preventDefault(); prevSlide(); }
+  if (e.key === 'Home') { e.preventDefault(); goTo(0); }
+  if (e.key === 'End') { e.preventDefault(); goTo(totalSlides - 1); }
+});
+
+// Touch swipe
+let touchStartX = 0;
+let touchEndX = 0;
+document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive:true});
+document.addEventListener('touchend', e => {
+  touchEndX = e.changedTouches[0].screenX;
+  const diff = touchStartX - touchEndX;
+  if (Math.abs(diff) > 50) {
+    if (diff > 0) nextSlide();
+    else prevSlide();
+  }
+}, {passive:true});
+</script>
+</body>
+</html>

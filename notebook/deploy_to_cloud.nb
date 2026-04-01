@@ -1,0 +1,38 @@
+Notebook[{
+
+Cell["Deploy Interactive Notebook to Wolfram Cloud", "Title"],
+
+Cell["This script deploys the Avraham & Gilo notebook as a fully interactive cloud notebook\nwith working Manipulate sliders. Run each cell in order.", "Text"],
+
+Cell["1. Set Permissions and Deploy", "Section"],
+
+Cell["The key difference: CloudDeploy with Interact permission makes Manipulate sliders work\nin the browser. CloudPublish only creates a static read-only view.", "Text"],
+
+Cell["(* Step 1: Load the notebook *)\nnbPath = FileNameJoin[{NotebookDirectory[], \"Avraham_Gilo_Lemma1_CRRA_v3.nb\"}];\nPrint[\"Loading: \", nbPath];\nPrint[\"File exists: \", FileExistsQ[nbPath]];", "Input"],
+
+Cell["(* Step 2: Deploy as interactive cloud notebook *)\ncloudObj = CloudDeploy[\n  Notebook[Import[nbPath, \"NB\"]],\n  \"Avraham_Gilo_Lemma1_Interactive\",\n  Permissions -> {All -> {\"Read\", \"Interact\"}}\n];\nPrint[\"Deployed to: \", cloudObj];", "Input"],
+
+Cell["2. Alternative: Deploy Individual Manipulate Panels", "Section"],
+
+Cell["If the full notebook is too heavy for cloud execution, you can deploy\neach Manipulate panel separately as a lightweight standalone app.", "Text"],
+
+Cell["(* --- Panel 1: Coverage Curve --- *)\n\n(* First, define all required functions *)\nwealth1[ww_, aa_, qq_, pp_, hh_] := ww - aa * qq * pp * hh;\nwealth2[ww_, aa_, qq_, pp_, hh_] := ww - aa * qq * pp * hh - (1 - aa) * hh;\ncrrAutilityPrime[aa_, gg_] := aa^(-gg);\ncrrArrowPratt[aa_, gg_] := gg / aa;\n\nfocCRRA[ww_, aa_, qq_, pp_, hh_, gg_] := Module[{w1, w2},\n  w1 = wealth1[ww, aa, qq, pp, hh];\n  w2 = wealth2[ww, aa, qq, pp, hh];\n  -(1 - pp) * qq * crrAutilityPrime[w1, gg] + (1 - qq * pp) * crrAutilityPrime[w2, gg]\n];\n\nsolveAlphaCRRA[ww_, qq_, pp_, hh_, gg_] := Module[{sol, aVal, f},\n  If[qq * pp >= 1, Return[0.0]];\n  f[av_?NumericQ] := focCRRA[ww, av, qq, pp, hh, gg];\n  sol = Quiet[Check[FindRoot[f[av], {av, 0.001, 0.999}], $Failed]];\n  If[sol =!= $Failed, aVal = av /. sol; Return[N[Max[0, Min[1, aVal]]]]];\n  sol = Quiet[Check[FindRoot[f[av], {av, 0.5}], $Failed]];\n  If[sol =!= $Failed, aVal = av /. sol; N[Max[0, Min[1, aVal]]], 0.0]\n];\n\nnumeratorLimitP0CRRA[ww_, aa_, qq_, hh_, gg_] := Module[{raW, raWH, wBottom},\n  If[aa < 0.0001, Return[N[qq - 1]]];\n  If[aa > 0.9999, Return[N[qq - 1]]];\n  wBottom = ww - hh * (1 - aa);\n  If[wBottom <= 0, Return[N[-Infinity]]];\n  raW = crrArrowPratt[ww, gg];\n  raWH = crrArrowPratt[wBottom, gg];\n  aa * qq * hh * (raW - raWH) + (qq - 1)\n];\n\ngammaCritical[ww_, aa_, qq_, hh_] := Module[{num, den},\n  If[aa < 0.0001 || aa > 0.9999, Return[Infinity]];\n  num = (qq - 1) * ww * (ww - hh * (1 - aa));\n  den = aa * qq * hh^2 * (1 - aa);\n  If[Abs[den] < 10^-12, Return[Infinity]];\n  N[num / den]\n];", "Input"],
+
+Cell["(* Deploy Panel 1 as standalone interactive app *)\npanel1 = CloudDeploy[\n  Manipulate[\n    Module[\n      {pVals, alphaVals, pStar, alphaStar, numP0, condText,\n       alphaAtP0, critGam, numVal},\n      SeedRandom[42];\n      pVals = Table[pp, {pp, 0.005, 1/qVal - 0.005, (1/qVal - 0.01) / 100}];\n      alphaVals = Map[\n        Function[pp, {pp, Quiet[solveAlphaCRRA[wVal, qVal, pp, hVal, gammaVal]]}],\n        pVals\n      ];\n      {pStar, alphaStar} = First[SortBy[alphaVals, -Last[#] &]];\n      alphaAtP0 = Quiet[solveAlphaCRRA[wVal, qVal, 0.01, hVal, gammaVal]];\n      numP0 = Quiet[numeratorLimitP0CRRA[wVal, alphaAtP0, qVal, hVal, gammaVal]];\n      numVal = N[numP0];\n      critGam = gammaCritical[wVal, alphaAtP0, qVal, hVal];\n      condText = If[NumericQ[numVal] && numVal < 0,\n        Style[\"Lemma 1(i) HOLDS: Single-peaked demand\", Bold, Darker[Green]],\n        Style[\"Lemma 1(ii): Monotone decreasing demand\", Bold, Red]\n      ];\n      Column[{\n        condText,\n        Row[{\n          StringForm[\"P* = `1`\", Round[pStar, 0.001]],\n          Spacer[10],\n          StringForm[\"alpha* = `1`\", Round[alphaStar, 0.001]],\n          Spacer[10],\n          StringForm[\"gamma-crit = `1`\", If[NumericQ[critGam] && critGam < 10^6, Round[critGam, 0.01], \"N/A\"]]\n        }],\n        ListLinePlot[alphaVals,\n          PlotLabel -> \"Optimal Coverage alpha*(P)\",\n          PlotStyle -> {Thick, Blue},\n          PlotRange -> {{0, 1/qVal}, {0, 1}},\n          Epilog -> {Red, PointSize[Large], Point[{pStar, alphaStar}]},\n          ImageSize -> 450,\n          Frame -> True,\n          FrameLabel -> {\"Accident Probability P\", \"Coverage alpha*\"},\n          GridLines -> Automatic\n        ]\n      }]\n    ],\n    {{wVal, 100, \"Wealth W\"}, 50, 500, 10},\n    {{hVal, 40, \"Harm H\"}, 5, 80, 5},\n    {{qVal, 1.3, \"Loading q\"}, 1.01, 3.0, 0.01},\n    {{gammaVal, 2.0, \"CRRA gamma\"}, 0.1, 15.0, 0.1},\n    TrackedSymbols :> {wVal, hVal, qVal, gammaVal},\n    SaveDefinitions -> True\n  ],\n  \"Avraham_Gilo_Panel1_Coverage\",\n  Permissions -> {All -> {\"Read\", \"Interact\"}}\n];\n\nPrint[\"Panel 1 deployed: \", panel1];", "Input"],
+
+Cell["3. Get Your Links", "Section"],
+
+Cell["(* Print all deployment URLs *)\nPrint[\"\\n=== DEPLOYMENT LINKS ===\"];\nPrint[\"Full notebook: https://www.wolframcloud.com/obj/daniell/Avraham_Gilo_Lemma1_Interactive\"];\nPrint[\"Panel 1 (Coverage): https://www.wolframcloud.com/obj/daniell/Avraham_Gilo_Panel1_Coverage\"];\nPrint[\"\\nNote: Manipulate sliders require Wolfram Cloud Credits for server-side evaluation.\"];\nPrint[\"Free accounts get limited credits. Each slider interaction uses a small amount.\"];", "Input"],
+
+Cell["4. Embed in a Web Page (Optional)", "Section"],
+
+Cell["You can embed the interactive panel in any web page using the Wolfram Notebook Embedder:", "Text"],
+
+Cell["(* HTML embed code for your website or presentation *)\nPrint[\"\\n=== EMBED CODE ===\"];\nPrint[\"<script crossorigin src=\\\"https://unpkg.com/wolfram-notebook-embedder@0.3/dist/wolfram-notebook-embedder.min.js\\\"></script>\"];\nPrint[\"<div id=\\\"notebook-container\\\" style=\\\"width:100%;height:600px;\\\"></div>\"];\nPrint[\"<script>\"];\nPrint[\"WolframNotebookEmbedder.embed(\"];\nPrint[\"  'https://www.wolframcloud.com/obj/daniell/Avraham_Gilo_Panel1_Coverage',\"];\nPrint[\"  document.getElementById('notebook-container')\"];\nPrint[\");\"];\nPrint[\"</script>\"];", "Input"]
+
+},
+WindowSize -> {1000, 750},
+WindowMargins -> {{Automatic, Automatic}, {Automatic, Automatic}},
+FrontEndVersion -> "14.0",
+StyleDefinitions -> "Default.nb"
+]
