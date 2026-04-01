@@ -137,7 +137,7 @@
 </div>
 
 <!-- SLIDE COUNTER -->
-<div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">18</span></div>
+<div class="slide-counter"><span id="currentSlide">1</span> / <span id="totalSlides">19</span></div>
 
 <!-- NAVIGATION -->
 <div class="nav-arrows">
@@ -166,39 +166,84 @@
   </div>
 </div>
 
-<!-- ===== SLIDE 3: WHAT GPT-5 COULDN'T DO ===== -->
+<!-- ===== SLIDE 3: WHY GPT-5 FUNDAMENTALLY CANNOT DO THIS ===== -->
 <div class="slide bg-deep">
-  <span class="step-badge step-red">The Challenge</span>
-  <h1>What GPT-5 <span class="accent-red">Couldn't</span> Do</h1>
+  <span class="step-badge step-red">The Core Problem</span>
+  <h1><span class="accent-red">Why</span> GPT-5 Fundamentally <span class="accent-red">Cannot</span> Do This</h1>
   <div class="divider"></div>
-  <p class="subtitle" style="max-width:800px;text-align:center;margin-bottom:28px;">
-    Professor Gilo's paper on insurance collusion contains Lemma 1 — a nuanced mathematical proof
-    involving implicit differentiation, Arrow-Pratt risk aversion, and limit arguments.
-    GPT-5 kept making algebraic errors when trying to verify it and apply it to CRRA utility.
+  <p class="subtitle" style="max-width:850px;text-align:center;margin-bottom:24px;">
+    This isn't about GPT-5 being "not smart enough." The failures are <strong>architectural</strong> —
+    built into how Large Language Models work. No amount of prompting can fix them.
   </p>
-  <div class="two-col" style="max-width:900px;">
-    <div class="card card-glow" style="border-left:3px solid #f87171;">
-      <h3 class="accent-red">❌ GPT-5 Failures</h3>
-      <ul class="bullet-list red">
-        <li>Incorrect implicit differentiation of FOC</li>
-        <li>Wrong Arrow-Pratt substitution steps</li>
-        <li>Missed limit behavior at P→0 and P→1</li>
-        <li>Could not produce executable code</li>
-        <li>No self-consistency check on γ vs α*(γ)</li>
-        <li>Repeated mistakes across multiple attempts</li>
-      </ul>
+  <div class="two-col" style="max-width:1050px;">
+    <div class="card card-glow" style="border-left:4px solid #f87171;">
+      <h3 class="accent-red" style="font-size:17px;">🧠 No Symbolic Algebra Engine</h3>
+      <p style="font-size:14px;color:#c0cce0;line-height:1.6;margin-bottom:10px;">
+        LLMs generate text that <em>looks like</em> math — they predict the next token.
+        They don't have a Computer Algebra System (CAS). When GPT-5 writes "dα*/dP = ...",
+        it's pattern-matching from training data, not computing a derivative.
+      </p>
+      <h3 class="accent-red" style="font-size:17px;margin-top:14px;">🔄 No Execution Feedback Loop</h3>
+      <p style="font-size:14px;color:#c0cce0;line-height:1.6;">
+        GPT-5 cannot run FindRoot, NIntegrate, or Solve. It cannot plug values back in
+        to check if the answer is correct. Each equation is generated once — with no way
+        to verify it actually holds.
+      </p>
     </div>
-    <div class="card card-glow" style="border-left:3px solid #34d399;">
-      <h3 class="accent-green">✅ What Was Needed</h3>
-      <ul class="bullet-list green">
-        <li>Verify every equation (14–19) step by step</li>
-        <li>Compute optimal α* numerically via FOC</li>
-        <li>Apply Lemma 1(i) to CRRA utility U=A<sup>(1-γ)</sup>/(1-γ)</li>
-        <li>Find critical γ threshold analytically</li>
-        <li>Self-consistent check: α*(γ) feeds back into γ_crit</li>
-        <li>Interactive notebook + plain-English proof</li>
-      </ul>
+    <div class="card card-glow" style="border-left:4px solid #f87171;">
+      <h3 class="accent-red" style="font-size:17px;">📝 Stateless Token Generation</h3>
+      <p style="font-size:14px;color:#c0cce0;line-height:1.6;margin-bottom:10px;">
+        Each token is predicted from context — there's no internal state that tracks
+        "I assumed α is fixed here, but α depends on γ." The model cannot detect
+        when its own assumptions contradict its conclusions.
+      </p>
+      <h3 class="accent-red" style="font-size:17px;margin-top:14px;">🚫 No Self-Consistency Verification</h3>
+      <p style="font-size:14px;color:#c0cce0;line-height:1.6;">
+        The critical error: GPT-5 computed γ_crit ≈ 5.9 while holding α fixed.
+        But α₀ depends on γ through the FOC. An LLM has no mechanism to detect
+        this circular dependency — it requires solving an implicit equation, which
+        requires a CAS.
+      </p>
     </div>
+  </div>
+</div>
+
+<!-- ===== SLIDE 4: THE FAILURE CHAIN ===== -->
+<div class="slide bg-accent">
+  <span class="step-badge step-red">The Failure Chain</span>
+  <h2>How Each Architectural Gap → <span class="accent-red">Specific Error</span></h2>
+  <div class="divider"></div>
+  <div style="max-width:850px;margin-top:20px;">
+    <div class="card" style="margin-bottom:10px;border-left:4px solid #f87171;padding:14px 24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span class="accent-red" style="font-size:14px;font-weight:700;white-space:nowrap;">No CAS →</span>
+        <p style="font-size:14px;color:#c0cce0;">Incorrect implicit differentiation of the FOC. GPT-5 dropped terms, confused ∂/∂P with d/dP, and produced wrong Arrow-Pratt substitutions across multiple attempts.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:4px solid #f87171;padding:14px 24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span class="accent-red" style="font-size:14px;font-weight:700;white-space:nowrap;">No Execution →</span>
+        <p style="font-size:14px;color:#c0cce0;">Could never verify that its Eq.(17) actually satisfies the identity. No FindRoot to compute α*, no NIntegrate to check limit behavior at P→0 and P→1.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:4px solid #f87171;padding:14px 24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span class="accent-red" style="font-size:14px;font-weight:700;white-space:nowrap;">Stateless →</span>
+        <p style="font-size:14px;color:#c0cce0;">Held α fixed at 0.5 while computing γ_crit, unaware this contradicts the FOC which determines α₀(γ). Repeated the same error across 5+ attempts because it couldn't "remember" the dependency.</p>
+      </div>
+    </div>
+    <div class="card" style="margin-bottom:10px;border-left:4px solid #f87171;padding:14px 24px;">
+      <div style="display:flex;align-items:baseline;gap:12px;">
+        <span class="accent-red" style="font-size:14px;font-weight:700;white-space:nowrap;">No Verification →</span>
+        <p style="font-size:14px;color:#c0cce0;">Concluded "Lemma 1(i) holds for CRRA when γ &gt; 5.9." The correct answer: it almost NEVER holds — only for catastrophic harm (H/W &gt; 88%). GPT-5 had no way to catch this.</p>
+      </div>
+    </div>
+  </div>
+  <div class="card" style="max-width:850px;margin-top:16px;border:2px solid rgba(248,113,113,0.3);background:rgba(248,113,113,0.06);">
+    <p style="font-size:15px;color:#f87171;font-weight:600;text-align:center;line-height:1.6;">
+      💡 The bottom line: mathematical proof verification requires <strong>execution + feedback + self-consistency checking</strong>.<br>
+      These are not features you can add to an LLM with better prompts — they require an <strong>infrastructure stack</strong>.
+    </p>
   </div>
 </div>
 
@@ -631,7 +676,7 @@ H/W  ≥  (q−1) / (q · ln q)</div>
 let current = 0;
 const wrapper = document.getElementById('slidesWrapper');
 const slides = wrapper.children;
-const totalSlides = 18;
+const totalSlides = 19;
 document.getElementById('totalSlides').textContent = totalSlides;
 
 function goTo(n) {
