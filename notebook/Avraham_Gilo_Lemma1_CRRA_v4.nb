@@ -4214,7 +4214,7 @@ This gives:   U'(W2)/U'(W1) = (1-P)q / (1-qP)          ...(FOC')
 
 For CRRA, U'(A) = A^(-\[Gamma]), so:
 
-    (W2/W1)^\[Gamma] = (1-P)q / (1-qP)          ...(FOC-CRRA)\
+    (W1/W2)^\[Gamma] = (1-P)q / (1-qP)          ...(FOC-CRRA)\
 \>", "Text",ExpressionUUID->"93817cbf-5ed5-864e-a9c7-87e4fa58a247"]
 }, Open  ]],
 
