@@ -62,7 +62,7 @@ manipulateExpr = Manipulate[
       Style["Lemma 1(ii): Monotone decreasing demand", Bold, Red]
     ];
     Column[{
-      Style["Avraham & Gilo (2025) - Lemma 1 CRRA Verification", Bold, 16],
+      Style["TAU Researcher 1 & TAU Researcher 2 (2025) - Lemma 1 CRRA Verification", Bold, 16],
       condText,
       Row[{
         StringForm["P* = `1`", Round[pStar, 0.001]],
@@ -94,7 +94,7 @@ manipulateExpr = Manipulate[
 (* Method 1: CloudDeploy to a specific URL *)
 result1 = CloudDeploy[
   manipulateExpr,
-  CloudObject["Avraham_Gilo_Interactive_v2"],
+  CloudObject["TAU_Researcher1_TAU_Researcher2_Interactive_v2"],
   Permissions -> "Public"
 ];
 Print["CloudDeploy result: ", result1];
@@ -107,12 +107,12 @@ NotebookClose[nb];
 
 result2 = CloudDeploy[
   nbContent,
-  CloudObject["Avraham_Gilo_NB_Interactive_v2"],
+  CloudObject["TAU_Researcher1_TAU_Researcher2_NB_Interactive_v2"],
   Permissions -> "Public"
 ];
 Print["Notebook deploy result: ", result2];
 
 Print["\n=== LINKS ==="];
-Print["Standalone Manipulate: https://www.wolframcloud.com/obj/daniell/Avraham_Gilo_Interactive_v2"];
-Print["Notebook with Manipulate: https://www.wolframcloud.com/obj/daniell/Avraham_Gilo_NB_Interactive_v2"];
+Print["Standalone Manipulate: https://www.wolframcloud.com/obj/daniell/TAU_Researcher1_TAU_Researcher2_Interactive_v2"];
+Print["Notebook with Manipulate: https://www.wolframcloud.com/obj/daniell/TAU_Researcher1_TAU_Researcher2_NB_Interactive_v2"];
 Print["\nBoth should have working sliders. Try dragging a slider and wait 2-3 seconds."];

@@ -1,8 +1,8 @@
 # Lemma 1(i) Applied to CRRA Utility: A Step-by-Step Proof
 
-**Based on:** Avraham, R. and Gilo, D. (2025), *Insurance Collusion and Imperfect Competition when Insurers Increase Risk*
+**Based on:** TAU Researcher 1, R. and TAU Researcher 2, D. (2025), *Insurance Collusion and Imperfect Competition when Insurers Increase Risk*
 
-**Prepared for:** Professor David Gilo, Tel Aviv University Faculty of Law
+**Prepared for:** Professor TAU Researcher 2, Tel Aviv University Faculty of Law
 
 ---
 
@@ -304,7 +304,7 @@ $$N_0 \to (q-1) - \frac{qH\ln q}{W}$$
 
 ## References
 
-1. Avraham, R. and Gilo, D. (2025). Insurance Collusion and Imperfect Competition when Insurers Increase Risk. Working Paper, Tel Aviv University.
+1. TAU Researcher 1, R. and TAU Researcher 2, D. (2025). Insurance Collusion and Imperfect Competition when Insurers Increase Risk. Working Paper, Tel Aviv University.
 2. Arrow, K.J. (1965). Aspects of the Theory of Risk-Bearing. Yrjö Jahnsson Lectures.
 3. Pratt, J.W. (1964). Risk Aversion in the Small and in the Large. *Econometrica*, 32(1-2), 122–136.
 4. Friend, I. and Blume, M.E. (1975). The Demand for Risky Assets. *American Economic Review*, 65(5), 900–922.

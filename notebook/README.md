@@ -1,10 +1,10 @@
-# Avraham & Gilo (2025) — Lemma 1 Verification & CRRA Application
+# TAU Researcher 1 & TAU Researcher 2 (2025) — Lemma 1 Verification & CRRA Application
 
 ## Purpose
 
 This Mathematica notebook computationally verifies **Lemma 1** (and its proof in the Appendix) from:
 
-> Avraham, R. and Gilo, D. (2025). *Insurance Collusion and Imperfect Competition when Insurers Increase Risk.* Working Paper, Tel Aviv University.
+> TAU Researcher 1, R. and TAU Researcher 2, D. (2025). *Insurance Collusion and Imperfect Competition when Insurers Increase Risk.* Working Paper, Tel Aviv University.
 
 It then **applies Lemma 1(i) to CRRA utility consumers**, deriving the critical risk aversion threshold and demonstrating single-peaked insurance demand.
 
@@ -20,7 +20,7 @@ It then **applies Lemma 1(i) to CRRA utility consumers**, deriving the critical 
 
 ## How to Run
 
-1. Open `Avraham_Gilo_Lemma1_CRRA.nb` in Mathematica
+1. Open `TAU_Researcher1_TAU_Researcher2_Lemma1_CRRA.nb` in Mathematica
 2. Go to **Evaluate → Evaluate Notebook** (or Ctrl+A, Shift+Enter)
 3. Use the interactive Manipulate panels (Section 8) to explore parameters
 
@@ -78,7 +78,7 @@ W, H, P, q, gamma
 ```
 notebook/
 ├── README.md                          # This file
-├── Avraham_Gilo_Lemma1_CRRA.nb       # Main notebook
+├── TAU_Researcher1_TAU_Researcher2_Lemma1_CRRA.nb       # Main notebook
 └── exports/                           # For exported figures/tables
 ```
 
