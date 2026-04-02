@@ -34,7 +34,7 @@ NotebookWrite[nb, Cell["The consumer maximizes EU = (1-P)\[CenterDot]U(W1) + P\[
     -(1-P)\[CenterDot]q\[CenterDot]U'(W1) + (1-qP)\[CenterDot]U'(W2) = 0          ...(FOC)\n\n\
 This gives the marginal utility ratio:   U'(W2)/U'(W1) = (1-P)q / (1-qP)          ...(FOC')\n\n\
 For CRRA, U'(A) = A^(-\[Gamma]), so the FOC becomes:\n\n\
-    (W2/W1)^\[Gamma] = (1-P)q / (1-qP)          ...(FOC-CRRA)", "Text"]];
+    (W1/W2)^\[Gamma] = (1-P)q / (1-qP)          ...(FOC-CRRA)", "Text"]];
 
 (* --- A.3 Optimal alpha at P=0 --- *)
 NotebookWrite[nb, Cell["A.3  Optimal Coverage at P \[Rule] 0", "Subsection"]];

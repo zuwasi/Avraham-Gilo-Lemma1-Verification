@@ -29,7 +29,7 @@ This gives:   U'(W2)/U'(W1) = (1-P)q / (1-qP)          ...(FOC')
 
 For CRRA, U'(A) = A^(-\[Gamma]), so:
 
-    (W2/W1)^\[Gamma] = (1-P)q / (1-qP)          ...(FOC-CRRA)", "Text"],
+    (W1/W2)^\[Gamma] = (1-P)q / (1-qP)          ...(FOC-CRRA)", "Text"],
 
 Cell["A.3  Optimal Coverage at P \[Rule] 0", "Subsection"],
 Cell["As P \[Rule] 0, W1 \[Rule] W and W2 \[Rule] W - H(1-\[Alpha]). The FOC-CRRA becomes:
