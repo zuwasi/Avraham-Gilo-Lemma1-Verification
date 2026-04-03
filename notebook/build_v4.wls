@@ -2,12 +2,12 @@
 
 Print["Building v4 notebook with proof appendix..."];
 
-v3 = Import["C:\\Amp_demos\\TAU Researcher 2 TAU\\notebook\\TAU_Researcher1_TAU_Researcher2_Lemma1_CRRA_v3.nb", "NB"];
+v3 = Import["C:\\Amp_demos\\Insurance_Collusion_Lemma1\\notebook\\Insurance_Collusion_Lemma1_CRRA_v3.nb", "NB"];
 existingCells = First[v3];
 
 proofCells = {
 Cell["Appendix: Plain-English Proof \[LongDash] Lemma 1(i) for CRRA Utility", "Section"],
-Cell["This appendix presents a self-contained, step-by-step mathematical proof with no code. All equation numbers refer to TAU Researcher 1 and TAU Researcher 2 (2025).", "Text"],
+Cell["This appendix presents a self-contained, step-by-step mathematical proof with no code. All equation numbers refer to Authors (2025).", "Text"],
 
 Cell["A.1  Setup and Notation", "Subsection"],
 Cell["A risk-averse consumer with wealth W > 0 faces harm H > 0 (with W > H) occurring with probability P \[Element] (0,1). Insurance coverage \[Alpha] \[Element] [0,1] costs premium \[Alpha]qPH, where q \[GreaterEqual] 1 is the loading factor.
@@ -180,6 +180,6 @@ v4 = Notebook[allCells,
   StyleDefinitions -> "Default.nb"
 ];
 
-outPath = "C:\\Amp_demos\\TAU Researcher 2 TAU\\notebook\\TAU_Researcher1_TAU_Researcher2_Lemma1_CRRA_v4.nb";
+outPath = "C:\\Amp_demos\\Insurance_Collusion_Lemma1\\notebook\\Insurance_Collusion_Lemma1_CRRA_v4.nb";
 Export[outPath, v4, "NB"];
 Print["Saved: ", outPath];

@@ -21,7 +21,7 @@ Notebook[{
 
 Cell[CellGroupData[{
 Cell["\<\
-TAU Researcher 1 & TAU Researcher 2 (2025) \[LongDash] Lemma 1 Verification and CRRA Application\
+Authors (2025) \[LongDash] Lemma 1 Verification and CRRA Application\
 \>", "Title",ExpressionUUID->"549093e3-0463-f248-af52-2bcd33346107"],
 
 Cell["\<\
@@ -31,7 +31,7 @@ Insurance Collusion and Imperfect Competition when Insurers Increase Risk\
 Cell["\<\
 Computational verification of Lemma 1 and its proof (Appendix), with \
 application to CRRA utility consumers.
-Prepared for Professor TAU Researcher 2, Tel Aviv University Faculty of Law.\
+Prepared for the lead author.\
 \>", "Text",ExpressionUUID->"d0a1f37c-e66b-2640-b558-e475b9f6d374"],
 
 Cell[CellGroupData[{
@@ -39,7 +39,7 @@ Cell[CellGroupData[{
 Cell["1. Model Setup and Parameter Definitions", "Section",ExpressionUUID->"f2eb3fcc-1a3e-944f-b4b0-21d8cfe51b24"],
 
 Cell["\<\
-This section defines all model primitives from TAU Researcher 1 & TAU Researcher 2 (2025), Section \
+This section defines all model primitives from Authors (2025), Section \
 II.
 
 Key Variables:
@@ -4048,8 +4048,8 @@ Cell[CellGroupData[{
 Cell["12. References", "Section",ExpressionUUID->"fadc0aef-c804-1f4e-846f-e709127e757d"],
 
 Cell["\<\
-[1] TAU Researcher 1, R. and TAU Researcher 2, D. (2025). Insurance Collusion and Imperfect \
-Competition when Insurers Increase Risk. Working Paper, Tel Aviv University.
+[1] Author A. and Author B. (2025). Insurance Collusion and Imperfect \
+Competition when Insurers Increase Risk. Working Paper.
 
 [2] Arrow, K.J. (1965). Aspects of the Theory of Risk-Bearing. Yrjo Jahnsson \
 Lectures.

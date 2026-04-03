@@ -2,7 +2,7 @@
 
 (* Add plain-English proof section to the notebook *)
 
-nbPath = "C:\\Amp_demos\\TAU Researcher 2 TAU\\notebook\\TAU_Researcher1_TAU_Researcher2_Lemma1_CRRA_v3.nb";
+nbPath = "C:\\Amp_demos\\Insurance_Collusion_Lemma1\\notebook\\Insurance_Collusion_Lemma1_CRRA_v3.nb";
 Print["Opening notebook: ", nbPath];
 
 nb = NotebookOpen[nbPath];
@@ -14,7 +14,7 @@ SelectionMove[nb, After, Notebook];
 
 NotebookWrite[nb, Cell["Appendix: Plain-English Proof of Lemma 1(i) for CRRA Utility", "Section"]];
 
-NotebookWrite[nb, Cell["This appendix presents a self-contained, step-by-step proof in plain mathematical language (no code). \nAll equation numbers refer to TAU Researcher 1 & TAU Researcher 2 (2025).", "Text"]];
+NotebookWrite[nb, Cell["This appendix presents a self-contained, step-by-step proof in plain mathematical language (no code). \nAll equation numbers refer to Authors (2025).", "Text"]];
 
 (* --- A.1 Setup --- *)
 NotebookWrite[nb, Cell["A.1  Setup and Notation", "Subsection"]];

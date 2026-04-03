@@ -1,6 +1,6 @@
 #!/usr/bin/env wolframscript
 
-(* === TAU Researcher 1 & TAU Researcher 2 - Cloud Deployment Script === *)
+(* === Authors - Cloud Deployment Script === *)
 
 Print["=== Starting Cloud Deployment ==="];
 Print["Authenticating with Wolfram Cloud..."];
@@ -68,7 +68,7 @@ panel1 = CloudDeploy[
         Style["Lemma 1(ii): Monotone decreasing demand", Bold, Red]
       ];
       Column[{
-        Style["TAU Researcher 1 & TAU Researcher 2 (2025) - Lemma 1 CRRA Verification", Bold, 16],
+        Style["Authors (2025) - Lemma 1 CRRA Verification", Bold, 16],
         condText,
         Row[{
           StringForm["P* = `1`", Round[pStar, 0.001]],
@@ -96,7 +96,7 @@ panel1 = CloudDeploy[
     TrackedSymbols :> {wVal, hVal, qVal, gammaVal},
     SaveDefinitions -> True
   ],
-  CloudObject["TAU_Researcher1_TAU_Researcher2_Panel1_Coverage"],
+  CloudObject["Insurance_Collusion_Panel1_Coverage"],
   Permissions -> {All -> {"Read", "Interact"}}
 ];
 
@@ -104,11 +104,11 @@ Print["Panel 1 deployed: ", panel1];
 
 (* Deploy the full notebook *)
 Print["\nDeploying full notebook..."];
-nbPath = "C:\\Amp_demos\\TAU Researcher 2 TAU\\notebook\\TAU_Researcher1_TAU_Researcher2_Lemma1_CRRA_v3.nb";
+nbPath = "C:\\Amp_demos\\Insurance_Collusion_Lemma1\\notebook\\Insurance_Collusion_Lemma1_CRRA_v3.nb";
 If[FileExistsQ[nbPath],
   fullNB = CloudDeploy[
     Import[nbPath, "NB"],
-    CloudObject["TAU_Researcher1_TAU_Researcher2_Lemma1_Interactive"],
+    CloudObject["Insurance_Collusion_Lemma1_Interactive"],
     Permissions -> {All -> {"Read", "Interact"}}
   ];
   Print["Full notebook deployed: ", fullNB],
@@ -116,5 +116,5 @@ If[FileExistsQ[nbPath],
 ];
 
 Print["\n=== DEPLOYMENT COMPLETE ==="];
-Print["Panel 1: https://www.wolframcloud.com/obj/daniell/TAU_Researcher1_TAU_Researcher2_Panel1_Coverage"];
-Print["Full NB:  https://www.wolframcloud.com/obj/daniell/TAU_Researcher1_TAU_Researcher2_Lemma1_Interactive"];
+Print["Panel 1: https://www.wolframcloud.com/obj/daniell/Insurance_Collusion_Panel1_Coverage"];
+Print["Full NB:  https://www.wolframcloud.com/obj/daniell/Insurance_Collusion_Lemma1_Interactive"];

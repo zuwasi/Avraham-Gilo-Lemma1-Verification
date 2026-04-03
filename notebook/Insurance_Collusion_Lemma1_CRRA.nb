@@ -1,14 +1,14 @@
 Notebook[{
 
-Cell["TAU Researcher 1 & TAU Researcher 2 (2025) \[LongDash] Lemma 1 Verification and CRRA Application", "Title"],
+Cell["Authors (2025) \[LongDash] Lemma 1 Verification and CRRA Application", "Title"],
 Cell["Insurance Collusion and Imperfect Competition when Insurers Increase Risk", "Subtitle"],
-Cell["Computational verification of Lemma 1 and its proof (Appendix), with application to CRRA utility consumers.\nPrepared for Professor TAU Researcher 2, Tel Aviv University Faculty of Law.", "Text"],
+Cell["Computational verification of Lemma 1 and its proof (Appendix), with application to CRRA utility consumers.\nPrepared for the lead author.", "Text"],
 
 (* ================================================================ *)
 Cell["1. Model Setup and Parameter Definitions", "Section"],
 (* ================================================================ *)
 
-Cell["This section defines all model primitives from TAU Researcher 1 & TAU Researcher 2 (2025), Section II.\n\nKey Variables:\n  W = initial wealth (W > H)\n  H = harm magnitude (H > 0)\n  P = probability of accident, P in (0,1)\n  q = loading factor (q >= 1; q=1 is actuarially fair)\n  alpha = coverage fraction, alpha in [0,1]\n  theta = risk aversion parameter (heterogeneity index)\n  gamma = CRRA coefficient (for CRRA utility specialization)", "Text"],
+Cell["This section defines all model primitives from Authors (2025), Section II.\n\nKey Variables:\n  W = initial wealth (W > H)\n  H = harm magnitude (H > 0)\n  P = probability of accident, P in (0,1)\n  q = loading factor (q >= 1; q=1 is actuarially fair)\n  alpha = coverage fraction, alpha in [0,1]\n  theta = risk aversion parameter (heterogeneity index)\n  gamma = CRRA coefficient (for CRRA utility specialization)", "Text"],
 
 Cell["(* --- Reproducibility --- *)\nSeedRandom[42];\n\n(* === Model Parameters (Association) === *)\nmodelParams = <|\n  \"W\" -> 100,       (* initial wealth *)\n  \"H\" -> 40,        (* harm magnitude, must be < W *)\n  \"qMin\" -> 1.01,   (* minimum loading factor, supra-competitive *)\n  \"qMax\" -> 2.0,    (* maximum loading factor *)\n  \"qDefault\" -> 1.3,(* default loading factor for demonstrations *)\n  \"thetaMin\" -> 0.5,(* minimum risk aversion *)\n  \"thetaMax\" -> 5.0, (* maximum risk aversion *)\n  \"gammaMin\" -> 0.5,(* CRRA: minimum gamma *)\n  \"gammaMax\" -> 10.0,(* CRRA: maximum gamma *)\n  \"nTheta\" -> 50     (* number of theta grid points for integration *)\n|>;\n\nPrint[\"Model parameters loaded:\"];\nPrint[modelParams];", "Input"],
 
@@ -140,7 +140,7 @@ Cell["Print[\"\\n========== KEY FINDINGS ==========\"];\nPrint[\"\"];\nPrint[\"1
 Cell["12. References", "Section"],
 (* ================================================================ *)
 
-Cell["[1] TAU Researcher 1, R. and TAU Researcher 2, D. (2025). Insurance Collusion and Imperfect Competition when Insurers Increase Risk. Working Paper, Tel Aviv University.\n\n[2] Arrow, K.J. (1965). Aspects of the Theory of Risk-Bearing. Yrjo Jahnsson Lectures.\n\n[3] Pratt, J.W. (1964). Risk Aversion in the Small and in the Large. Econometrica, 32(1-2), 122-136.\n\n[4] Mossin, J. (1968). Aspects of Rational Insurance Purchasing. Journal of Political Economy, 76(4), 553-568.\n\n[5] Friend, I. and Blume, M.E. (1975). The Demand for Risky Assets. American Economic Review, 65(5), 900-922. [Empirical CRRA estimates gamma = 2-5]", "Text"]
+Cell["[1] Author A. and Author B. (2025). Insurance Collusion and Imperfect Competition when Insurers Increase Risk. Working Paper.\n\n[2] Arrow, K.J. (1965). Aspects of the Theory of Risk-Bearing. Yrjo Jahnsson Lectures.\n\n[3] Pratt, J.W. (1964). Risk Aversion in the Small and in the Large. Econometrica, 32(1-2), 122-136.\n\n[4] Mossin, J. (1968). Aspects of Rational Insurance Purchasing. Journal of Political Economy, 76(4), 553-568.\n\n[5] Friend, I. and Blume, M.E. (1975). The Demand for Risky Assets. American Economic Review, 65(5), 900-922. [Empirical CRRA estimates gamma = 2-5]", "Text"]
 
 },
 WindowSize -> {1200, 900},
