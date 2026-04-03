@@ -25,7 +25,7 @@ Authors (2025) \[LongDash] Lemma 1 Verification and CRRA Application\
 \>", "Title",ExpressionUUID->"549093e3-0463-f248-af52-2bcd33346107"],
 
 Cell["\<\
-Insurance Collusion and Imperfect Competition when Insurers Increase Risk\
+Insurance Demand under Supra-Competitive Pricing\
 \>", "Subtitle",ExpressionUUID->"adcab441-4e65-f743-aeba-297eb9016159"],
 
 Cell["\<\
@@ -3855,7 +3855,7 @@ Print[\"3. ECONOMIC INTERPRETATION:\"];
 Print[\"   - Single-peaked demand (Lemma 1(i)) means insurers who increase \
 risk\"];
 Print[\"     beyond P-bar will see aggregate demand decline.\"];
-Print[\"   - This creates a natural limit on risk-increasing collusion.\"];
+Print[\"   - This creates a natural limit on risk-increasing demand.\"];
 Print[\"   - The threshold P-bar depends on consumer risk aversion.\"];
 Print[\"   - Higher CRRA gamma (more risk-averse consumers) raises P-bar,\"];
 Print[\"     expanding the region where risk increases boost demand.\"];
@@ -4001,7 +4001,7 @@ Cell[BoxData["\<\"     beyond P-bar will see aggregate demand decline.\"\>"], \
 In[623]:=",ExpressionUUID->"df608329-18b5-9a45-9e5e-8b6d004a290c"],
 
 Cell[BoxData["\<\"   - This creates a natural limit on risk-increasing \
-collusion.\"\>"], "Print",
+Demand demand DEMAND.\"\>"], "Print",
  CellChangeTimes->{3.983935877033039*^9},
  CellLabel->
   "During evaluation of \
@@ -4048,7 +4048,7 @@ Cell[CellGroupData[{
 Cell["12. References", "Section",ExpressionUUID->"fadc0aef-c804-1f4e-846f-e709127e757d"],
 
 Cell["\<\
-[1] Author A. and Author B. (2025). Insurance Collusion and Imperfect \
+[1] Author A. and Author B. (2025). Insurance Demand and Imperfect \
 Competition when Insurers Increase Risk. Working Paper.
 
 [2] Arrow, K.J. (1965). Aspects of the Theory of Risk-Bearing. Yrjo Jahnsson \

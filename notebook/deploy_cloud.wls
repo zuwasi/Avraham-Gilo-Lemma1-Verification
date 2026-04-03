@@ -96,7 +96,7 @@ panel1 = CloudDeploy[
     TrackedSymbols :> {wVal, hVal, qVal, gammaVal},
     SaveDefinitions -> True
   ],
-  CloudObject["Insurance_Collusion_Panel1_Coverage"],
+  CloudObject["Insurance_Demand_Panel1_Coverage"],
   Permissions -> {All -> {"Read", "Interact"}}
 ];
 
@@ -104,11 +104,11 @@ Print["Panel 1 deployed: ", panel1];
 
 (* Deploy the full notebook *)
 Print["\nDeploying full notebook..."];
-nbPath = "C:\\Amp_demos\\Insurance_Collusion_Lemma1\\notebook\\Insurance_Collusion_Lemma1_CRRA_v3.nb";
+nbPath = "C:\\Amp_demos\\Insurance_Demand_Lemma1\\notebook\\Insurance_Demand_Lemma1_CRRA_v3.nb";
 If[FileExistsQ[nbPath],
   fullNB = CloudDeploy[
     Import[nbPath, "NB"],
-    CloudObject["Insurance_Collusion_Lemma1_Interactive"],
+    CloudObject["Insurance_Demand_Lemma1_Interactive"],
     Permissions -> {All -> {"Read", "Interact"}}
   ];
   Print["Full notebook deployed: ", fullNB],
@@ -116,5 +116,5 @@ If[FileExistsQ[nbPath],
 ];
 
 Print["\n=== DEPLOYMENT COMPLETE ==="];
-Print["Panel 1: https://www.wolframcloud.com/obj/daniell/Insurance_Collusion_Panel1_Coverage"];
-Print["Full NB:  https://www.wolframcloud.com/obj/daniell/Insurance_Collusion_Lemma1_Interactive"];
+Print["Panel 1: https://www.wolframcloud.com/obj/daniell/Insurance_Demand_Panel1_Coverage"];
+Print["Full NB:  https://www.wolframcloud.com/obj/daniell/Insurance_Demand_Lemma1_Interactive"];

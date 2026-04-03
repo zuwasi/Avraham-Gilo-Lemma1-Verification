@@ -2,7 +2,7 @@
 
 (* Add plain-English proof section to the notebook *)
 
-nbPath = "C:\\Amp_demos\\Insurance_Collusion_Lemma1\\notebook\\Insurance_Collusion_Lemma1_CRRA_v3.nb";
+nbPath = "C:\\Amp_demos\\Insurance_Demand_Lemma1\\notebook\\Insurance_Demand_Lemma1_CRRA_v3.nb";
 Print["Opening notebook: ", nbPath];
 
 nb = NotebookOpen[nbPath];

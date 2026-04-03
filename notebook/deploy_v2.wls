@@ -94,7 +94,7 @@ manipulateExpr = Manipulate[
 (* Method 1: CloudDeploy to a specific URL *)
 result1 = CloudDeploy[
   manipulateExpr,
-  CloudObject["Insurance_Collusion_Interactive_v2"],
+  CloudObject["Insurance_Demand_Interactive_v2"],
   Permissions -> "Public"
 ];
 Print["CloudDeploy result: ", result1];
@@ -107,12 +107,12 @@ NotebookClose[nb];
 
 result2 = CloudDeploy[
   nbContent,
-  CloudObject["Insurance_Collusion_NB_Interactive_v2"],
+  CloudObject["Insurance_Demand_NB_Interactive_v2"],
   Permissions -> "Public"
 ];
 Print["Notebook deploy result: ", result2];
 
 Print["\n=== LINKS ==="];
-Print["Standalone Manipulate: https://www.wolframcloud.com/obj/daniell/Insurance_Collusion_Interactive_v2"];
-Print["Notebook with Manipulate: https://www.wolframcloud.com/obj/daniell/Insurance_Collusion_NB_Interactive_v2"];
+Print["Standalone Manipulate: https://www.wolframcloud.com/obj/daniell/Insurance_Demand_Interactive_v2"];
+Print["Notebook with Manipulate: https://www.wolframcloud.com/obj/daniell/Insurance_Demand_NB_Interactive_v2"];
 Print["\nBoth should have working sliders. Try dragging a slider and wait 2-3 seconds."];

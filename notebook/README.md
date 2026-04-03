@@ -4,7 +4,7 @@
 
 This Mathematica notebook computationally verifies **Lemma 1** (and its proof in the Appendix) from:
 
-> Author A. and Author B. (2025). *Insurance Collusion and Imperfect Competition when Insurers Increase Risk.* Working Paper.
+> Author A. and Author B. (2025). *Insurance Demand under Supra-Competitive Pricing.* Working Paper.
 
 It then **applies Lemma 1(i) to CRRA utility consumers**, deriving the critical risk aversion threshold and demonstrating single-peaked insurance demand.
 
@@ -20,7 +20,7 @@ It then **applies Lemma 1(i) to CRRA utility consumers**, deriving the critical 
 
 ## How to Run
 
-1. Open `Insurance_Collusion_Lemma1_CRRA.nb` in Mathematica
+1. Open `Insurance_Demand_Lemma1_CRRA.nb` in Mathematica
 2. Go to **Evaluate → Evaluate Notebook** (or Ctrl+A, Shift+Enter)
 3. Use the interactive Manipulate panels (Section 8) to explore parameters
 
@@ -78,7 +78,7 @@ W, H, P, q, gamma
 ```
 notebook/
 ├── README.md                          # This file
-├── Insurance_Collusion_Lemma1_CRRA.nb       # Main notebook
+├── Insurance_Demand_Lemma1_CRRA.nb       # Main notebook
 └── exports/                           # For exported figures/tables
 ```
 

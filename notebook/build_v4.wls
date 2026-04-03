@@ -2,7 +2,7 @@
 
 Print["Building v4 notebook with proof appendix..."];
 
-v3 = Import["C:\\Amp_demos\\Insurance_Collusion_Lemma1\\notebook\\Insurance_Collusion_Lemma1_CRRA_v3.nb", "NB"];
+v3 = Import["C:\\Amp_demos\\Insurance_Demand_Lemma1\\notebook\\Insurance_Demand_Lemma1_CRRA_v3.nb", "NB"];
 existingCells = First[v3];
 
 proofCells = {
@@ -180,6 +180,6 @@ v4 = Notebook[allCells,
   StyleDefinitions -> "Default.nb"
 ];
 
-outPath = "C:\\Amp_demos\\Insurance_Collusion_Lemma1\\notebook\\Insurance_Collusion_Lemma1_CRRA_v4.nb";
+outPath = "C:\\Amp_demos\\Insurance_Demand_Lemma1\\notebook\\Insurance_Demand_Lemma1_CRRA_v4.nb";
 Export[outPath, v4, "NB"];
 Print["Saved: ", outPath];
