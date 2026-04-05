@@ -842,16 +842,20 @@ Cell[CellGroupData[{
 Cell["5.4 Limit Analysis: P -> 1", "Subsection",ExpressionUUID->"de47cc4e-7236-9446-a6c0-c9e7903ceee5"],
 
 Cell["\<\
-As P -> 1, the paper shows (p.24):
-  - alpha* -> 0 (coverage vanishes)
-  - The squared bracket on the LHS of Eq.(14) converges to H*(1-q)^2 * \
-U''(W2) < 0
-  - The RHS converges to q*[U'(W2) - U'(W1)] > 0 (by concavity)
-  - Therefore d(alpha)/dP < 0 as P -> 1
+Note: P cannot exceed 1/q (since 1-qP must be positive for the model to be well-defined).
+As P \[Rule] 1/q:
+  - The term (q-1)/(1-qP) in the numerator of Eq.(17) diverges to +\[Infinity]
+  - Therefore N(P) > 0 for P near 1/q, which means d\[Alpha]*/dP < 0
+  - This is a simpler argument than the P \[Rule] 1 limit used in the paper
 
-This proves that if d(alpha)/dP > 0 near P=0 (Lemma 1(i) condition),
-then there must exist a P-bar in (0,1) that maximizes alpha* (single-peaked).\
-\
+For single-peakedness (Lemma 1(i)), we need:
+  (a) N(P) < 0 near P = 0 (so d\[Alpha]*/dP > 0 initially)
+  (b) N(P) > 0 near P = 1/q (so d\[Alpha]*/dP < 0 eventually) \[LongDash] this always holds
+  (c) N(P) is strictly increasing in P \[LongDash] this ensures EXACTLY ONE crossing
+
+Conditions (a)+(b) give at least one peak by the Intermediate Value Theorem.
+Condition (c) guarantees uniqueness: N crosses zero exactly once, so there is a SINGLE peak.
+Without (c), there could be multiple peaks and troughs.\
 \>", "Text",ExpressionUUID->"dc3d2c36-03ce-fe42-baf3-5ce91fa65631"],
 
 Cell[CellGroupData[{
@@ -860,7 +864,7 @@ Cell["\<\
 (* Verify the P -> 1 limit for CRRA *)
 verifyPto1Limit[ww_, qq_, hh_, gg_] := Module[
   {pTest, aOpt, w1, w2, up1, up2, lhsBracket, rhsVal},
-  pTest = 0.999;
+  pTest = 1/qq - 0.001;
   aOpt = solveAlphaCRRA[ww, qq, pTest, hh, gg];
   w1 = wealth1[ww, aOpt, qq, pTest, hh];
   w2 = wealth2[ww, aOpt, qq, pTest, hh];
@@ -4387,6 +4391,35 @@ Utility functions where Lemma 1(i) DOES hold need Ra(A) to decrease FASTER \
 than 1/A. Candidates include HARA utility with Ra(A) = 1/(a+bA), or utility \
 functions with Decreasing Relative Risk Aversion (DRRA).\
 \>", "Text",ExpressionUUID->"e3220b6c-7a2e-524e-89d9-300af4b40046"]
+}, Open  ]],
+
+Cell[CellGroupData[{
+
+Cell["A.9b  Individual vs. Aggregate Demand", "Subsection"],
+
+Cell["\<\
+The proof above establishes single-peakedness of an INDIVIDUAL consumer's \
+optimal coverage \[Alpha]*(P). For the paper's economic argument about \
+insurance collusion, we need single-peakedness of AGGREGATE demand.
+
+Individual single-peakedness does NOT automatically imply aggregate \
+single-peakedness. However, a sufficient condition is:
+
+    d\[Alpha]*/dP is strictly decreasing in P for ALL consumer types
+
+If consumers differ in risk aversion \[Gamma] (e.g., \[Gamma] distributed \
+uniformly in [\[Gamma]_low, \[Gamma]_high]), and if d\[Alpha]*/dP is \
+strictly decreasing in P for each \[Gamma], then:
+
+    \[CapitalSigma]_i d\[Alpha]_i*/dP  is also strictly decreasing in P
+
+because a sum of strictly decreasing functions is strictly decreasing. \
+This means aggregate demand also crosses zero exactly once, inheriting \
+single-peakedness.
+
+This aggregation condition should be verified numerically for the relevant \
+parameter range.\
+\>", "Text"]
 }, Open  ]],
 
 Cell[CellGroupData[{

@@ -393,16 +393,19 @@ D = −(1−P)·H·[qP·Ra(W₁) + (1−qP)·Ra(W₂)]     ← always < 0</div>
   <div class="two-col" style="max-width:900px;margin-top:20px;">
     <div class="card" style="border-left:3px solid #34d399;">
       <h3 style="font-size:15px;"><span class="accent-green">N &lt; 0 → dα*/dP &gt; 0</span></h3>
-      <p style="font-size:14px;color:#8899bb;">Demand rises then falls → <strong>Lemma 1(i)</strong> single-peaked</p>
+      <p style="font-size:14px;color:#8899bb;">If N is strictly increasing in P (crosses zero once), demand is <strong>single-peaked</strong> → Lemma 1(i)</p>
     </div>
     <div class="card" style="border-left:3px solid #f87171;">
       <h3 style="font-size:15px;"><span class="accent-red">N &gt; 0 → dα*/dP &lt; 0</span></h3>
-      <p style="font-size:14px;color:#8899bb;">Demand falls monotonically → <strong>Lemma 1(ii)</strong></p>
+      <p style="font-size:14px;color:#8899bb;">N stays positive for all P → demand falls monotonically → <strong>Lemma 1(ii)</strong></p>
     </div>
   </div>
   <div class="card" style="max-width:900px;margin-top:16px;">
     <h3 style="font-size:14px;" class="accent-blue">Numerator at P→0</h3>
     <div class="code-box" style="font-size:13px;">N₀ = α₀·q·H·γ·[1/W − 1/(W − H(1−α₀))] + (q−1)</div>
+  </div>
+  <div class="card" style="max-width:900px;margin-top:12px;border-left:3px solid #fb923c;">
+    <p style="font-size:14px;color:#fb923c;"><strong>⚠ Domain:</strong> P ∈ [0, 1/q), not [0, 1]. The constraint 1−qP &gt; 0 requires P &lt; 1/q. As P → 1/q, the term (q−1)/(1−qP) → +∞, making N &gt; 0 and dα*/dP &lt; 0 unambiguously.</p>
   </div>
 </div>
 
@@ -525,6 +528,15 @@ H/W  ≥  (q−1) / (q · ln q)</div>
       Utility functions where Ra(A) decreases <strong class="accent-orange">faster than 1/A</strong>
       (e.g., HARA with appropriate parameters, DRRA class) are needed for Lemma 1(i) to hold
       at typical harm levels.
+    </p>
+  </div>
+  <div class="card" style="max-width:800px;margin-top:12px;border-left:3px solid #60a5fa;">
+    <h3 class="accent-blue" style="font-size:15px;">📊 Individual → Aggregate</h3>
+    <p style="font-size:14px;color:#c0cce0;line-height:1.6;">
+      Single-peakedness of each consumer's α*(P) does not automatically imply single-peakedness
+      of <strong>aggregate</strong> demand. If dα*/dP is strictly decreasing in P for all consumer
+      types (e.g., γ distributed uniformly), then the sum of derivatives is also decreasing →
+      aggregate demand inherits single-peakedness.
     </p>
   </div>
 </div>
