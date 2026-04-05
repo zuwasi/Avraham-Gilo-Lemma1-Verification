@@ -4407,9 +4407,9 @@ single-peakedness. However, a sufficient condition is:
 
     d\[Alpha]*/dP is strictly decreasing in P for ALL consumer types
 
-If consumers differ in risk aversion \[Gamma] (e.g., \[Gamma] distributed \
-uniformly in [\[Gamma]_low, \[Gamma]_high]), and if d\[Alpha]*/dP is \
-strictly decreasing in P for each \[Gamma], then:
+If consumers differ in risk aversion \[Gamma] and d\[Alpha]*/dP is \
+strictly decreasing in P for each \[Gamma] type, then (regardless of \
+how the types are distributed):
 
     \[CapitalSigma]_i d\[Alpha]_i*/dP  is also strictly decreasing in P
 
