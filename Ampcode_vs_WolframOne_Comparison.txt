@@ -1,0 +1,161 @@
+================================================================================
+   COMPARISON: Ampcode + CandleKeep + Mathematica  vs.  Wolfram One + ChatGPT
+================================================================================
+
+   Task: Reproduce and verify Lemma 1 from "Insurance Demand under
+         Supra-Competitive Pricing" (Gilo, 2025), then extend it
+         to CRRA utility — producing an interactive Mathematica notebook.
+
+================================================================================
+   1. WHAT ACTUALLY HAPPENED
+================================================================================
+
+   AMPCODE STACK:
+     Single natural-language prompt produced a complete, self-consistent
+     proof and a production-ready interactive .nb notebook with:
+       - 12 sections
+       - 3 Manipulate panels with interactive sliders
+       - 6 validation tests
+       - Plain-English proof appendix for presentation to the lead author
+
+   WOLFRAM ONE + CHATGPT:
+     ChatGPT explained 6 theoretical integration architectures for
+     connecting Wolfram to an LLM. Zero actual computation was performed.
+     No notebook was produced. No equations were solved. The conversation
+     never reached the actual lemma.
+
+================================================================================
+   2. MATH EXECUTION
+================================================================================
+
+   AMPCODE STACK:
+     Real Computer Algebra System execution: FindRoot, NIntegrate, Solve
+     all ran inside Mathematica. Results were fed back into the pipeline
+     for verification and self-consistency checking.
+
+   WOLFRAM ONE + CHATGPT:
+     None. ChatGPT described HOW you could call Wolfram Engine, but never
+     actually executed any computation. All output was descriptive text.
+
+================================================================================
+   3. SELF-CONSISTENCY VERIFICATION
+================================================================================
+
+   AMPCODE STACK:
+     Caught the critical error: alpha_0 depends on gamma through the FOC,
+     so you cannot hold alpha fixed while computing gamma_crit. GPT-5
+     missed this across 5+ attempts because it has no mechanism to detect
+     circular dependencies between variables.
+
+     Correct result: Lemma 1(i) almost NEVER holds for CRRA — only for
+     catastrophic harm (H/W > 88% at q=1.3).
+
+     GPT-5's wrong result: Lemma 1(i) holds for gamma > 5.9 (computed
+     with alpha fixed at 0.5).
+
+   WOLFRAM ONE + CHATGPT:
+     Not even attempted. The conversation never got to the actual
+     mathematical problem.
+
+================================================================================
+   4. DELIVERABLE
+================================================================================
+
+   AMPCODE STACK:
+     Production-ready .nb file with:
+       - Interactive sliders (W: 50-500, H: 5-80, q: 1.01-3.0, gamma: 0.1-15)
+       - Coverage alpha*(P) plot with peak detection
+       - Arrow-Pratt decomposition of Eq.(17)
+       - Aggregate demand with heterogeneous consumers
+       - 6 numerical validation tests
+       - Documented for scientific presentation to the lead author
+
+   WOLFRAM ONE + CHATGPT:
+     A general-purpose architecture overview document explaining 6 ways
+     to connect Wolfram to an LLM. No notebook, no code, no proof.
+
+================================================================================
+   5. CANDLEKEEP vs. NO REFERENCE LIBRARY
+================================================================================
+
+   AMPCODE STACK:
+     60+ Wolfram Language reference documents queried via RAG to ensure
+     correct Mathematica syntax for Manipulate, FindRoot, Plot,
+     NIntegrate, and notebook structure. This eliminates the syntax
+     errors that LLMs typically produce when generating .nb files.
+
+   WOLFRAM ONE + CHATGPT:
+     No equivalent. ChatGPT relies on training data, which produces
+     frequent syntax errors in .nb format (invalid BoxData, bracket
+     mismatches, incorrect cell grouping).
+
+================================================================================
+   6. VALIDATION PIPELINE
+================================================================================
+
+   AMPCODE STACK:
+     Automated 6-point syntax validation:
+       1. Bracket balance check
+       2. Invalid character detection
+       3. BoxData structure validation
+       4. Notebook structure verification
+       5. String escaping check
+       6. Cell grouping validation
+
+   WOLFRAM ONE + CHATGPT:
+     None.
+
+================================================================================
+   7. WHY THE GAP EXISTS (ARCHITECTURAL)
+================================================================================
+
+   The gap is not about "intelligence" — it is architectural:
+
+     1. No Symbolic Algebra Engine
+        LLMs generate text that looks like math. They predict the next
+        token; they do not compute derivatives. When GPT-5 writes
+        "d_alpha/dP = ...", it is pattern-matching, not calculating.
+
+     2. No Execution Feedback Loop
+        GPT-5 cannot run FindRoot, NIntegrate, or Solve. It cannot plug
+        values back in to check if the answer is correct. Each equation
+        is generated once with no way to verify it.
+
+     3. Stateless Token Generation
+        Each token is predicted from context. There is no internal state
+        tracking "I assumed alpha is fixed here, but alpha depends on
+        gamma." The model cannot detect when its own assumptions
+        contradict its conclusions.
+
+     4. No Self-Consistency Verification
+        The critical failure: computing gamma_crit while holding alpha
+        fixed, when alpha itself depends on gamma through the FOC.
+        Detecting this requires solving an implicit equation — which
+        requires a CAS.
+
+   The Ampcode stack closes all four gaps:
+     AI reads paper  ->  CandleKeep provides correct syntax  ->
+     Mathematica executes  ->  results feed back for self-consistency
+
+================================================================================
+   8. BOTTOM LINE
+================================================================================
+
+   ChatGPT gave a planning document about how one COULD use Wolfram.
+   The Ampcode stack gave a verified proof with an interactive notebook.
+
+   The ChatGPT conversation demonstrates exactly the architectural gap
+   that the Ampcode presentation warns about: ChatGPT can TALK about
+   using Wolfram, but it cannot EXECUTE, VERIFY, or SELF-CORRECT.
+
+================================================================================
+   Sources
+================================================================================
+
+   Ampcode presentation:
+     https://zuwasi.github.io/Insurance-Demand-Lemma1/presentation/Insurance_Demand_Lemma1_Presentation_v2.html
+
+   ChatGPT conversation (Wolfram One):
+     https://chatgpt.com/share/69d21da2-982c-8387-a53a-990ea4985fc7
+
+================================================================================
